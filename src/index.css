@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --gradient-start: #8B5CF6;
+  --gradient-middle: #EC4899;
+  --gradient-end: #EF4444;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(to right,
+      var(--gradient-start),
+      var(--gradient-middle),
+      var(--gradient-end));
+  background-size: 200% 200%;
+  animation: gradient 8s linear infinite;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+}
+
+.glow-button {
+  padding: 1rem 2rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(to right, #7C3AED, #EC4899);
+  border-radius: 9999px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.glow-button:hover {
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
