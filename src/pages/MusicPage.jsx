@@ -85,10 +85,7 @@ function MusicPage() {
                 />
             </div>
             <button
-                onClick={() => {
-                    console.log("Navigating to Gift Selection Page...");
-                    navigate('/gift-selection');
-                }}
+                onClick={() => navigate('/gift-selection')}
                 className="mt-6 px-4 py-2 bg-white text-black rounded-lg shadow-lg hover:bg-gray-200 transition"
             >
                 Take Me to the End
