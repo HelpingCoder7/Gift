@@ -69,19 +69,23 @@ function MusicPage() {
     }, []);
 
     return (
-        <div ref={containerRef} className="min-h-screen bg-gradient-to-b from-purple-900 via-pink-800 to-pink-900 flex flex-col items-center justify-center p-4">
+        <div className="min-h-screen bg-gradient-to-b flex flex-col items-center justify-center p-4">
             <Message />
-            <VinylRecord imageSrc="https://picsum.photos/200" />
-            <div className="w-full max-w-[280px] md:max-w-[320px] mt-6">
+            <img
+                src={'/images/7.jpeg'}
+                
+                className="w-full h-full object-cover rounded-2xl"
+              />
+            <div className="w-min max-w-[180px] max-h-[70px] mt-8">
                 <AudioPlayer
-                    src="/songs/her++.mp3"
+                    src="/songs/pal.mp3"
                     showJumpControls={false}
                     customProgressBarSection={[]}
-                    customControlsSection={["MAIN_CONTROLS", "VOLUME_CONTROLS"]}
-                    className="rounded-lg shadow-2xl bg-white/30 backdrop-blur-md text-sm"
-                    style={{ background: 'rgba(255, 255, 255, 0.15)', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)' }}
+                    customControlsSection={["MAIN_CONTROLS"]}
+                    className="rounded-lg shadow-2xl bg-black/30 backdrop-blur-md text-sm bg-white"
+                    style={{ background: 'black' }}
                     autoPlay
-                    volume={0.8}
+                    volume={1}
                 />
             </div>
             <button
@@ -89,9 +93,9 @@ function MusicPage() {
                     console.log("Navigating to Gift Selection Page...");
                     navigate('/gift-selection');
                 }}
-                className="mt-6 px-4 py-2 bg-white text-black rounded-lg shadow-lg hover:bg-gray-200 transition"
+                className="mt-8 px-4 py-2 bg-white text-black rounded-lg shadow-lg hover:bg-gray-200 transition"
             >
-                Take Me to the End
+                ek gift or
             </button>
         </div>
     );

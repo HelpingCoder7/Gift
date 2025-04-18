@@ -14,7 +14,7 @@ body {
       var(--gradient-middle),
       var(--gradient-end));
   background-size: 200% 200%;
-  animation: gradient 8s linear infinite;
+  animation: gradient 25s linear infinite;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;

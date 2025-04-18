@@ -5,6 +5,8 @@ import { gsap } from 'gsap';
 import { useNavigate } from 'react-router-dom';
 import { createGiftBox } from '../utils/createGiftBox';
 import * as THREE from 'three';
+import { motion } from 'framer-motion';
+
 
 function Lights() {
     return (
@@ -19,21 +21,44 @@ function Lights() {
 function GiftBox({ onOpen }) {
     const giftBox = useRef();
     const [isOpened, setIsOpened] = useState(false);
-
+    const [isMobile, setIsMobile] = useState(false);
+  
     useEffect(() => {
-        if (isOpened && giftBox.current) {
-            gsap.to(giftBox.current.rotation, { x: -Math.PI / 2, duration: 1.2, ease: 'back.inOut(1.7)' });
-            gsap.to(giftBox.current.position, { y: 2, duration: 1, ease: 'power2.inOut', delay: 0.4 });
-            gsap.delayedCall(1.8, onOpen);
-        }
+      const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+      checkMobile();
+      window.addEventListener('resize', checkMobile);
+      return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+  
+    useEffect(() => {
+      if (isOpened && giftBox.current) {
+        gsap.to(giftBox.current.rotation, {
+          x: -Math.PI / 2,
+          duration: 1.2,
+          ease: 'back.inOut(1.7)',
+        });
+        gsap.to(giftBox.current.position, {
+          y: 2,
+          duration: 1,
+          ease: 'power2.inOut',
+          delay: 0.4,
+        });
+        gsap.delayedCall(1.8, onOpen);
+      }
     }, [isOpened, onOpen]);
-
+  
     return (
-        <group ref={giftBox} onClick={() => !isOpened && setIsOpened(true)}>
-            <primitive object={createGiftBox()} />
-        </group>
+      <group
+        ref={giftBox}
+        scale={isMobile ? 0.6 : 1}
+        position={isMobile ? [0, 0.5, 0] : [0, 1, 0]}
+        onClick={() => !isOpened && setIsOpened(true)}
+      >
+        <primitive object={createGiftBox()} />
+      </group>
     );
-}
+  }
+  
 
 function CenterPhoto({ image }) {
     const photoRef = useRef();
@@ -126,102 +151,92 @@ function SidePhoto({ image, index }) {
     );
 }
 
-function PhotosDisplay({ images, onContinue }) {
-    const buttonRef = useRef();
-
-    useEffect(() => {
-        if (buttonRef.current) {
-            gsap.from(buttonRef.current, {
-                opacity: 0,
-                y: 20,
-                duration: 1,
-                delay: 2,
-                ease: 'power2.out'
-            });
-        }
-    }, []);
-
-    return (
-        <div className="relative w-full h-screen flex flex-col items-center justify-center p-2">
-
-            {/* Image Grid */}
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                {images.map((image, index) => (
-                    <div key={index} className="relative group">
-                        <img
-                            src={image}
-                            alt={`Memory ${index + 1}`}
-                            className="w-full h-32 sm:h-40 md:h-48 object-cover rounded-lg shadow-xl transition-transform duration-300 transform group-hover:scale-105"
-                            style={{
-                                boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
-                            }}
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <span className="text-white text-lg font-semibold">Image {index + 1}</span>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            {/* Continue Button */}
-
-            <button
-                ref={buttonRef}
-                onClick={onContinue}
-                className="mt-4 px-6 py-2.5 bg-white/10 backdrop-blur-sm text-white rounded-full 
-                          shadow-lg hover:bg-white/20 transition-all duration-300 font-semibold text-base
-                          border border-white/20 hover:scale-105"
-            >
-                Continue to Music ♪
-            </button>
-
-        </div>
-    );
-}
 
 
 function GiftBoxPage() {
-    const [showPhotos, setShowPhotos] = useState(false);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const dummyImages = useMemo(() =>
-        Array.from({ length: 7 }, (_, i) => `https://picsum.photos/400/600?random=${i + 1}`)
-        , []);
+  const dummyImages = useMemo(
+    () =>
+      Array.from({ length: 6 }, (_, i) => ({
+        url: `/images/${i + 1}.jpeg`,
+        quote: [
+          "आज दिन बहुत खास हैं,बहन के लिए कुछ मेरे पास है,उसके सुकून के खातिर ओ बहना,तेरा भाई हमेशा तेरे आस – पास है।",
+          'आसमान पर जितने सितारे हैं,आंखों में जितने इशारे हैं,समंदर के जितने किनारे है,उतने ही स्क्रू ढीलें तुम्हारे हैं।',
+          'दूर रहना आपका हमसे सहा नहीं जाता,जुदा हो के आपसे हमसे रहा नहीं जाता,अब तो वापस लौट आईये हमारे पास,दिल का हाल अब किसी से कहा नहीं जाता।',
 
-    const handleContinue = () => {
-        // Fade out animation before navigation
-        gsap.to('.relative', {
-            opacity: 0,
-            duration: 0.5,
-            onComplete: () => navigate('/music')
-        });
-    };
+          'इन दूरियों की ना परवाह कीजिये,दिल करे जब हमे पुकार लीजिये,ज्यादा दूर नहीं हैं हम आपसे,बस एक कॉल करके हमे बुला लीजिये।',
 
-    return (
-        <div className="relative w-full h-screen bg-gradient-to-b from-purple-900 via-pink-800 to-pink-900">
-            {!showPhotos ? (
-                <Canvas shadows camera={{ position: [0, 3, 6], fov: 50 }}>
-                    <Suspense fallback={null}>
-                        <Lights />
-                        <GiftBox onOpen={() => setShowPhotos(true)} />
-                        <OrbitControls
-                            enableZoom={false}
-                            minPolarAngle={Math.PI / 3}
-                            maxPolarAngle={Math.PI / 2}
-                            enablePan={false}
-                            target={[0, 1, 0]}
-                        />
-                        <Environment preset="sunset" />
-                        <fog attach="fog" args={['#000', 5, 15]} />
-                    </Suspense>
-                </Canvas>
-            ) : (
-                <PhotosDisplay images={dummyImages} onContinue={handleContinue} />
-            )}
-        </div>
-    );
+          'तेरे और मेरे दिल का रिश्ता बहुत अजीब है,मीलों की है दूरियाँ फिर भी तू सबसे क़रीब है।',
+          'मांगी थी एक दुआ हमने रब से देना एक प्यारी से बहन जो अलग हो सबसे,खुदा ने कर ली कबूल मेरी दुआ,और बोलै सम्भालो अपनी अमानत,जो अनमोल है सबसे',
+        ][i],
+      })),
+    []
+  );
+
+  const handleContinue = () => {
+    gsap.to('.relative', {
+      opacity: 0,
+      duration: 0.5,
+      onComplete: () => navigate('/music'),
+    });
+  };
+
+  return (
+    <div className="relative w-full h-screen bg-gradient-to-b from-purple-900 via-pink-800 to-pink-900 overflow-y-auto">
+      <PhotosDisplay images={dummyImages} onContinue={handleContinue} />
+    </div>
+  );
 }
 
+function PhotosDisplay({ images, onContinue }) {
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const handleToggle = (index) => {
+    setActiveIndex((prev) => (prev === index ? null : index));
+  };
+
+  return (
+    <div className="relative w-full min-h-screen flex flex-col items-center justify-center p-4">
+<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-full">
+{images.map((image, index) => {
+          const isActive = activeIndex === index;
+
+          return (
+            <div
+              key={index}
+              className="relative w-full aspect-[3/4] rounded-2xl shadow-xl overflow-hidden cursor-pointer"
+              onClick={() => handleToggle(index)}
+            >
+              <img
+                src={image.url}
+                alt={`Memory ${index + 1}`}
+                className="w-full h-full object-cover rounded-2xl"
+              />
+
+              {isActive && (
+                <div className="absolute inset-0 bg-black/70 flex items-center justify-center p-3 text-center text-white rounded-2xl transition-opacity duration-300">
+                  <span className="text-xs sm:text-sm md:text-base font-semibold leading-snug">
+                    {image.quote || `Memory ${index + 1}`}
+                  </span>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="glow-button mt-6 sm:mt-8 px-6 py-3 sm:px-8 sm:py-3.5 text-base sm:text-lg font-semibold text-white rounded-full border border-white/20 bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all duration-300"
+        onClick={onContinue}
+      >
+        MAJA AAYA
+      </motion.button>
+      
+    </div>
+  );
+}   
 export default GiftBoxPage;
 
