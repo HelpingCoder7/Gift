@@ -72,7 +72,7 @@ function MusicPage() {
         <div className="min-h-screen bg-gradient-to-b flex flex-col items-center justify-center p-4">
             <Message />
             <img
-                src={'/images/7.jpeg'}
+                src={'/images/himi/7.jpeg'}
                 
                 className="w-full h-full object-cover rounded-2xl"
               />

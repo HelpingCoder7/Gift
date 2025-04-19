@@ -3,10 +3,10 @@ import { gsap } from "gsap";
 
 const gifts = [
  
-  { id: 1, image: "/images/8.jpeg", text: "Gift 1: A beautiful surprise!" },
-  { id: 2, image: "/images/9.jpeg", text: "Gift 2: Something special for you!" },
-  { id: 3, image: "/images/10.jpeg", text: "Gift 3: A delightful treat!" },
-  { id: 4, image: "/images/11.jpeg", text: "Gift 3: A delightful treat!" },
+  { id: 1, image: "/images/himi/8.jpeg", text: "Gift 1: A beautiful surprise!" },
+  { id: 2, image: "/images/himi/9.jpeg", text: "Gift 2: Something special for you!" },
+  { id: 3, image: "/images/himi/10.jpeg", text: "Gift 3: A delightful treat!" },
+  { id: 4, image: "/images/himi/11.jpeg", text: "Gift 3: A delightful treat!" },
  
 ];
 
